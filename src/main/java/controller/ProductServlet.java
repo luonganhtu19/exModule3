@@ -30,6 +30,7 @@ public class ProductServlet extends HttpServlet {
         }
         switch (action){
             case "create":
+                showCreateProduct(req,resp);
                 break;
             default:
                 listProduct(req,resp);
@@ -39,7 +40,17 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String action=req.getParameter("action");
+        if (action==null){
+            action="";
+        }
+        switch (action){
+            case "create":
+                resultCreateProduct(req,resp);
+                break;
+            default:
+                break;
+        }
     }
 
     private void listProduct(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
@@ -49,5 +60,24 @@ public class ProductServlet extends HttpServlet {
         request.setAttribute("listCategory",categoryList);
         RequestDispatcher dispatcher=request.getRequestDispatcher("product/productList.jsp");
         dispatcher.forward(request,response);
+    }
+    private void showCreateProduct(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        List<Category> categoryList=categoryDao.selectAllCategory();
+        request.setAttribute("listCategory",categoryList);
+        RequestDispatcher dispatcher=request.getRequestDispatcher("product/createProduct.jsp");
+        dispatcher.forward(request,response);
+    }
+    private void resultCreateProduct(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        Long Price = Long.parseLong(request.getParameter("Price"));
+        int Quantity =Integer.parseInt( request.getParameter("Quantity"));
+        String Color=request.getParameter("Color");
+        String Description=request.getParameter("Description");
+        int categoryID=Integer.parseInt(request.getParameter("categoryID"));
+        Product newProduct= new Product(name,Price,Quantity,Color,categoryID,Description);
+        productDao.insertProduct(newProduct);
+        request.setAttribute("message","Success create new account");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("product/createProduct.jsp");
+        dispatcher.forward(request, response);
     }
 }

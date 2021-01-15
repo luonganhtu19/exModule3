@@ -18,16 +18,18 @@ public class Product {
 
 
 
-    public Product(int id, String nameProduct, long priceProduct, int quantityProduct, String color, int idCategory) {
-        this.id = id;
+
+
+    public Product(){};
+
+    public Product(String nameProduct, long priceProduct, int quantityProduct, String color, int idCategory, String descriptionProduct) {
         this.nameProduct = nameProduct;
         this.priceProduct = priceProduct;
         this.quantityProduct = quantityProduct;
         this.color = color;
         this.idCategory = idCategory;
+        this.descriptionProduct = descriptionProduct;
     }
-
-    public Product(){};
 
     public Product(int id, String nameProduct, long priceProduct, int quantityProduct, String color, String descriptionProduct, int idCategory) {
         this.id = id;
@@ -38,7 +40,14 @@ public class Product {
         this.descriptionProduct = descriptionProduct;
         this.idCategory = idCategory;
     }
-
+    public Product(int id, String nameProduct, long priceProduct, int quantityProduct, String color, int idCategory) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.priceProduct = priceProduct;
+        this.quantityProduct = quantityProduct;
+        this.color = color;
+        this.idCategory = idCategory;
+    }
 
     public int getId() {
         return id;

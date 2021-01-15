@@ -12,7 +12,9 @@ public class ProductDao implements IProductDao {
     private String jdbcPassword="Tuan@1993";
 
     private static final String SELECT_ALL_Product="select*from products";
-    private static final String INSERT_PRODUCT="insert into products value (?,?,?,?,?,?)";
+    private static final String INSERT_PRODUCT="insert into products(nameProduct,priceProduct," +
+                                                                     "quantityProduct,color,descriptionProduct," +
+                                                                      "idCategory) value (?,?,?,?,?,?)";
     public ProductDao(){};
     protected Connection getConnection(){
         Connection connection=null;
@@ -31,7 +33,14 @@ public class ProductDao implements IProductDao {
     @Override
     public void insertProduct(Product product) {
         try(Connection connection =getConnection();PreparedStatement preparedStatement=connection.prepareStatement(INSERT_PRODUCT)){
-            
+            preparedStatement.setString(1,product.getNameProduct());
+            preparedStatement.setLong(2,product.getPriceProduct());
+            preparedStatement.setInt(3,product.getQuantityProduct());
+            preparedStatement.setString(4,product.getColor());
+            preparedStatement.setString(5,product.getDescriptionProduct());
+            preparedStatement.setInt(6,product.getIdCategory());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         }catch (SQLException e){
             printSQLException(e);
         }

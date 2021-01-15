@@ -27,7 +27,7 @@
 <center>
     <h1> Product Management</h1>
     <h2>
-        <a href="">Add New User</a>
+        <a href="/products?action=create">Add New User</a>
     </h2>
     <div>
         <form action="/products" method="get">
