@@ -25,7 +25,7 @@
         <table border="1" cellpadding="5">
             <caption>
                 <h2>Add New Product</h2>
-                <c:if test="${message==null}">
+                <c:if test="${message!=null}">
                     <c:out value="${message}"/>
                 </c:if>
             </caption>
