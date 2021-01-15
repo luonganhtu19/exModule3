@@ -1,6 +1,8 @@
 package controller;
 
+import dao.CategoryDao;
 import dao.ProductDao;
+import model.Category;
 import model.Product;
 
 import javax.servlet.RequestDispatcher;
@@ -15,8 +17,10 @@ import java.util.List;
 @WebServlet(urlPatterns = "/products")
 public class ProductServlet extends HttpServlet {
     private ProductDao productDao;
+    private CategoryDao categoryDao;
     public void init(){
         productDao=new ProductDao();
+        categoryDao=new CategoryDao();
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,6 +45,8 @@ public class ProductServlet extends HttpServlet {
     private void listProduct(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
         List<Product> productList=productDao.selectAllProduct();
         request.setAttribute("listProduct",productList);
+        List<Category> categoryList=categoryDao.selectAllCategory();
+        request.setAttribute("listCategory",categoryList);
         RequestDispatcher dispatcher=request.getRequestDispatcher("product/productList.jsp");
         dispatcher.forward(request,response);
     }

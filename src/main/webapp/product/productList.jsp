@@ -55,7 +55,13 @@
                 <td><c:out value="${product.priceProduct}"/></td>
                 <td><c:out value="${product.quantityProduct}"/></td>
                 <td><c:out value="${product.color}"/></td>
-                <td><c:out value="${product.idCategory}"/></td>
+                <td>
+                    <c:forEach var="category" items="${listCategory}">
+                        <c:if test="${product.idCategory==category.idCategory}">
+                            <c:out value="${category.nameCategory}"/>
+                        </c:if>
+                    </c:forEach>
+                </td>
                 <td>
                     <a href="/products?action=edit?id=${product.id}">Edit</a>
                     <a href="/products?action=delete?id=${product.id}">Delete</a>
