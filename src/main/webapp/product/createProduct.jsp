@@ -62,9 +62,10 @@
             <tr>
                 <th> Category:</th>
                 <td>
-                    <select class="custom-select" name="categoryID" id="inputGroupSelect01" required>
+                    <select class="custom-select" name="categoryID" id="inputGroupSelect01" >
+                        <option value="" selected disabled>Choose..</option>
                         <c:forEach items="${listCategory}" var="category">
-                            <option value="${category.idCategory}" required>${category.nameCategory}</option>
+                            <option value="${category.idCategory}">${category.nameCategory}</option>
                         </c:forEach>
                     </select>
                 </td>

@@ -35,10 +35,12 @@
             <input type="submit" value="Search">
         </form>
     </div>
+    <c:if test="${sessionScope.get('message')!=null}">
+        <c:out value="${sessionScope.get('message')}" />
+    </c:if>
 </center>
 <div align="center">
     <table border="1" cellpadding="5">
-        <caption><h2>List product</h2></caption>
         <tr>
             <th>#</th>
             <th>Product Name</th>
@@ -63,8 +65,8 @@
                     </c:forEach>
                 </td>
                 <td>
-                    <a href="/products?action=edit?id=${product.id}">Edit</a>
-                    <a href="/products?action=delete?id=${product.id}">Delete</a>
+                    <a href="/products?action=edit&&id=${product.id}">Edit</a>
+                    <a href="/products?action=delete&&id=${product.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>

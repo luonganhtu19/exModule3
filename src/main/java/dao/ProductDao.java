@@ -15,6 +15,12 @@ public class ProductDao implements IProductDao {
     private static final String INSERT_PRODUCT="insert into products(nameProduct,priceProduct," +
                                                                      "quantityProduct,color,descriptionProduct," +
                                                                       "idCategory) value (?,?,?,?,?,?)";
+
+    private static final String UPDATE_PRODUCT="update products set nameProduct=?" +
+                                               ",priceProduct=?,quantityProduct=?, color=?" +
+                                               ",descriptionProduct=?, idCategory=? where id=?  ";
+    private static final String SELECT_Product_ID="select*from products where id=?";
+    private static final String DELETE_PRODUCT_ID="delete from products where id=?";
     public ProductDao(){};
     protected Connection getConnection(){
         Connection connection=null;
@@ -32,7 +38,8 @@ public class ProductDao implements IProductDao {
 
     @Override
     public void insertProduct(Product product) {
-        try(Connection connection =getConnection();PreparedStatement preparedStatement=connection.prepareStatement(INSERT_PRODUCT)){
+        try(Connection connection =getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement(INSERT_PRODUCT)){
             preparedStatement.setString(1,product.getNameProduct());
             preparedStatement.setLong(2,product.getPriceProduct());
             preparedStatement.setInt(3,product.getQuantityProduct());
@@ -48,7 +55,25 @@ public class ProductDao implements IProductDao {
 
     @Override
     public Product selectProduct(int id) {
-        return null;
+        Product product=null;
+        try(Connection connection=getConnection();
+            PreparedStatement preparedStatement= connection.prepareStatement(SELECT_Product_ID);){
+            preparedStatement.setInt(1, id);
+            ResultSet rs= preparedStatement.executeQuery();
+            while (rs.next()){
+                int id1 =rs.getInt("id");
+                String nameProduct=rs.getString("nameProduct");
+                long priceProduct=Long.parseLong(rs.getString("priceProduct"));
+                int quantityProduct=rs.getInt("quantityProduct");
+                String color=rs.getString("color");
+                String descriptionProduct=rs.getString("descriptionProduct");
+                int idCategory=rs.getInt("idCategory");
+                product=new Product(id1,nameProduct,priceProduct,quantityProduct,color,descriptionProduct,idCategory);
+            }
+        }catch (SQLException e){
+            printSQLException(e);
+        }
+        return product;
     }
 
     @Override
@@ -75,13 +100,36 @@ public class ProductDao implements IProductDao {
     }
 
     @Override
-    public boolean deleteProduct(int id) throws SQLException {
-        return false;
+    public boolean deleteProduct(int id) {
+        boolean rs=false;
+        try(Connection connection=getConnection();
+            PreparedStatement preparedStatement= connection.prepareStatement(DELETE_PRODUCT_ID);){
+            preparedStatement.setInt(1, id);
+             rs= preparedStatement.executeUpdate()>0;
+        }catch (SQLException e){
+            printSQLException(e);
+        }
+        return rs;
     }
 
     @Override
-    public boolean updateProduct(Product product) throws SQLException {
-        return false;
+    public boolean updateProduct(Product product) {
+        boolean rs=false;
+        try(Connection connection =getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement(UPDATE_PRODUCT)){
+            preparedStatement.setString(1,product.getNameProduct());
+            preparedStatement.setLong(2,product.getPriceProduct());
+            preparedStatement.setInt(3,product.getQuantityProduct());
+            preparedStatement.setString(4,product.getColor());
+            preparedStatement.setString(5,product.getDescriptionProduct());
+            preparedStatement.setInt(6,product.getIdCategory());
+            preparedStatement.setInt(7,product.getId());
+            System.out.println(preparedStatement);
+            rs=preparedStatement.executeUpdate()>0;
+        }catch (SQLException e){
+            printSQLException(e);
+        }
+        return rs;
     }
     private void printSQLException(SQLException ex){
         for (Throwable e:ex){
