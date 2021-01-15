@@ -32,40 +32,39 @@
             <tr>
                 <th> Name:</th>
                 <td>
-                    <input type="text" name="name" id="name" size="45"/>
+                    <input type="text" name="name" id="name" size="45" placeholder="input Name"required/>
                 </td>
             </tr>
             <tr>
                 <th> Price:</th>
                 <td>
-                    <input type="text" name="Price" id="Price" size="45"/>
+                    <input type="text" name="Price" id="Price" size="45" placeholder="input price" required/>
                 </td>
             </tr>
             <tr>
                 <th> Quantity:</th>
                 <td>
-                    <input type="text" name="Quantity" id="Quantity" size="15"/>
+                    <input type="text" name="Quantity" id="Quantity" placeholder="input quantity" size="15" required/>
                 </td>
             </tr>
             <tr>
                 <th> Color:</th>
                 <td>
-                    <input type="text" name="Color" id="Color" size="15"/>
+                    <input type="text" name="Color" id="Color" size="15" placeholder="input color" required/>
                 </td>
             </tr>
             <tr>
                 <th> Description:</th>
                 <td>
-                    <input type="text" name="Description" id="Description" size="15"/>
+                    <input type="text" name="Description" id="Description" size="15" placeholder="input description"  />
                 </td>
             </tr>
             <tr>
                 <th> Category:</th>
                 <td>
-                    <select class="custom-select" name="categoryID" id="inputGroupSelect01">
-                        <option selected>Choose...</option>
+                    <select class="custom-select" name="categoryID" id="inputGroupSelect01" required>
                         <c:forEach items="${listCategory}" var="category">
-                            <option value="${category.idCategory}">${category.nameCategory}</option>
+                            <option value="${category.idCategory}" required>${category.nameCategory}</option>
                         </c:forEach>
                     </select>
                 </td>
