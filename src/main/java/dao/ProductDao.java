@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDao implements IProductDao {
-    private String jdbcURL="jdbc:mysql://localhost:3306/game_magiccard?useSSL=false";
+    private String jdbcURL="jdbc:mysql://localhost:3306/ManagerProduct?useSSL=false";
     private String jdbcUserName="root";
     private String jdbcPassword="Tuan@1993";
 
-    private static final String SELECT_ALL_Product="select*from products inner join category on products.idCategory=category.idCategory";
+    private static final String SELECT_ALL_Product="select*from products";
+    private static final String INSERT_PRODUCT="insert into products value (?,?,?,?,?,?)";
     public ProductDao(){};
     protected Connection getConnection(){
         Connection connection=null;
@@ -29,22 +30,18 @@ public class ProductDao implements IProductDao {
 
     @Override
     public void insertProduct(Product product) {
-
+        try(Connection connection =getConnection();PreparedStatement preparedStatement=connection.prepareStatement(INSERT_PRODUCT)){
+            
+        }catch (SQLException e){
+            printSQLException(e);
+        }
     }
 
     @Override
     public Product selectProduct(int id) {
         return null;
     }
-//    create table products(
-//            id int primary key auto_increment,
-//            nameProduct varchar(100) not null,
-//    priceProduct bigint not null,
-//    quantityProduct int not null,
-//    descriptionProduct varchar(255),
-//    idCategory int not null,
-//    FOREIGN KEY (idCategory) REFERENCES category(idCategory)
-//            );
+
     @Override
     public List<Product> selectAllProduct() {
         List<Product> products=new ArrayList<>();
@@ -76,5 +73,20 @@ public class ProductDao implements IProductDao {
     @Override
     public boolean updateProduct(Product product) throws SQLException {
         return false;
+    }
+    private void printSQLException(SQLException ex){
+        for (Throwable e:ex){
+            if (e instanceof  SQLException){
+                e.printStackTrace(System.err);
+                System.err.println("SQLSate: "+((SQLException)e).getSQLState());
+                System.err.println("Error Code: "+((SQLException)e).getErrorCode());
+                System.err.println("Message:"+e.getMessage());
+                Throwable t=ex.getCause();
+                while (t!=null){
+                    System.out.println("Cause"+t);
+                    t=t.getCause();
+                }
+            }
+        }
     }
 }

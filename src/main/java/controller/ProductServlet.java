@@ -41,7 +41,7 @@ public class ProductServlet extends HttpServlet {
     private void listProduct(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
         List<Product> productList=productDao.selectAllProduct();
         request.setAttribute("listProduct",productList);
-        RequestDispatcher dispatcher=request.getRequestDispatcher("");
+        RequestDispatcher dispatcher=request.getRequestDispatcher("product/productList.jsp");
         dispatcher.forward(request,response);
     }
 }

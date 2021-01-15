@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>List product</title>
@@ -24,4 +25,44 @@
 </head>
 <body>
 <center>
-    <h1> Pro
+    <h1> Product Management</h1>
+    <h2>
+        <a href="">Add New User</a>
+    </h2>
+    <div>
+        <form action="/products" method="get">
+            <input type="text" name="Search" placeholder="Name product">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+</center>
+<div align="center">
+    <table border="1" cellpadding="5">
+        <caption><h2>List product</h2></caption>
+        <tr>
+            <th>#</th>
+            <th>Product Name</th>
+            <th> Price  </th>
+            <th>Quantity</th>
+            <th>Color   </th>
+            <th>Category</th>
+            <th>Action  </th>
+        </tr>
+        <c:forEach var="product" items="${listProduct}">
+            <tr>
+                <td><c:out value="${product.id}"/></td>
+                <td><c:out value="${product.nameProduct}"/></td>
+                <td><c:out value="${product.priceProduct}"/></td>
+                <td><c:out value="${product.quantityProduct}"/></td>
+                <td><c:out value="${product.color}"/></td>
+                <td><c:out value="${product.idCategory}"/></td>
+                <td>
+                    <a href="/products?action=edit?id=${product.id}">Edit</a>
+                    <a href="/products?action=delete?id=${product.id}">Delete</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
+</body>
+</html>
