@@ -11,16 +11,21 @@ public class ProductDao implements IProductDao {
     private String jdbcUserName="root";
     private String jdbcPassword="Tuan@1993";
 
-    private static final String SELECT_ALL_Product="select*from products";
-    private static final String INSERT_PRODUCT="insert into products(nameProduct,priceProduct," +
+    private static final String SELECT_ALL_Product ="select*from products";
+    private static final String INSERT_PRODUCT     ="insert into products(nameProduct,priceProduct," +
                                                                      "quantityProduct,color,descriptionProduct," +
                                                                       "idCategory) value (?,?,?,?,?,?)";
 
-    private static final String UPDATE_PRODUCT="update products set nameProduct=?" +
-                                               ",priceProduct=?,quantityProduct=?, color=?" +
-                                               ",descriptionProduct=?, idCategory=? where id=?  ";
-    private static final String SELECT_Product_ID="select*from products where id=?";
-    private static final String DELETE_PRODUCT_ID="delete from products where id=?";
+    private static final String UPDATE_PRODUCT    ="update products set nameProduct=?" +
+                                                   ",priceProduct=?,quantityProduct=?, color=?" +
+                                                   ",descriptionProduct=?, idCategory=? where id=?  ";
+    private static final String SELECT_Product_ID ="select*from products where id=?";
+    private static final String DELETE_PRODUCT_ID ="delete from products where id=?";
+    private static final String SEARCH_PRODUCT_NAME="select*from products where nameProduct like ?";
+
+
+
+
     public ProductDao(){};
     protected Connection getConnection(){
         Connection connection=null;
@@ -130,6 +135,28 @@ public class ProductDao implements IProductDao {
             printSQLException(e);
         }
         return rs;
+    }
+
+    public List<Product> searchProduct(String name){
+        List<Product> products=new ArrayList<>();
+        try(Connection connection=getConnection();
+           PreparedStatement preparedStatement=connection.prepareStatement(SEARCH_PRODUCT_NAME);){
+            preparedStatement.setString(1, "%" +name+"%");
+            ResultSet rs= preparedStatement.executeQuery();
+            while (rs.next()){
+                int id =rs.getInt("id");
+                String nameProduct=rs.getString("nameProduct");
+                long priceProduct=Long.parseLong(rs.getString("priceProduct"));
+                int quantityProduct=rs.getInt("quantityProduct");
+                String color=rs.getString("color");
+                String descriptionProduct=rs.getString("descriptionProduct");
+                int idCategory=rs.getInt("idCategory");
+                products.add(new Product(id,nameProduct,priceProduct,quantityProduct,color,descriptionProduct,idCategory));
+            }
+        }catch (SQLException e){
+            printSQLException(e);
+        }
+        return products;
     }
     private void printSQLException(SQLException ex){
         for (Throwable e:ex){

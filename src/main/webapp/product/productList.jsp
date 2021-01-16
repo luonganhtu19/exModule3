@@ -30,8 +30,8 @@
         <a href="/products?action=create">Add New User</a>
     </h2>
     <div>
-        <form action="/products" method="get">
-            <input type="text" name="Search" placeholder="Name product">
+        <form action="/products?action=search" method="post">
+            <input type="text" name="search" placeholder="Name product">
             <input type="submit" value="Search">
         </form>
     </div>

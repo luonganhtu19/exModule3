@@ -62,6 +62,9 @@ public class ProductServlet extends HttpServlet {
             case "edit":
                 editProduct(req,resp);
                 break;
+            case "search":
+                search(req,resp);
+                break;
             default:
                 break;
         }
@@ -106,7 +109,7 @@ public class ProductServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session=request.getSession();
         if (productDao.deleteProduct(id)){
-            session.setAttribute("message","success delete product "+productDao.selectProduct(id).getNameProduct());
+            session.setAttribute("message","success delete product ");
            List<Product> listProduct = productDao.selectAllProduct();
            request.setAttribute("listProduct", listProduct);
            List<Category> categoryList=categoryDao.selectAllCategory();
@@ -138,5 +141,19 @@ public class ProductServlet extends HttpServlet {
             request.setAttribute("listCategory",categoryList);
             RequestDispatcher dispatcher = request.getRequestDispatcher("product/editProduct.jsp");
             dispatcher.forward(request, response);
+    }
+    private void search(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        String name=request.getParameter("search");
+        List<Product> products;
+        if (name==null||name==""){
+            products=productDao.selectAllProduct();
+        }else {
+            products=productDao.searchProduct(name);
+        }
+        request.setAttribute("listProduct",products);
+        List<Category> categoryList=categoryDao.selectAllCategory();
+        request.setAttribute("listCategory",categoryList);
+        RequestDispatcher dispatcher=request.getRequestDispatcher("product/productList.jsp");
+        dispatcher.forward(request,response);
     }
 }
